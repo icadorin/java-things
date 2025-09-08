@@ -35,9 +35,8 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String document,
+    public User(String firstName, String lastName, String document,
                 String email, String password, BigDecimal balance, UserType userType) {
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.document = document;
