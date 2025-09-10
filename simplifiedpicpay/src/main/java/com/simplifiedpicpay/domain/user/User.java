@@ -1,6 +1,7 @@
 package com.simplifiedpicpay.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.simplifiedpicpay.dtos.UserDTO;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -35,15 +36,14 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String document,
-                String email, String password, BigDecimal balance, UserType userType) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.document = document;
-        this.email = email;
-        this.password = password;
-        this.balance = balance;
-        this.userType = userType;
+    public User(UserDTO data) {
+        this.firstName = data.firstName();
+        this.lastName = data.lastName();
+        this.balance = data.balance();
+        this.userType = data.userType();
+        this.password = data.password();
+        this.document = data.document();
+        this.email = data.email();
     }
 
     public Long getId() {
@@ -113,6 +113,7 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(id, user.id);
@@ -120,7 +121,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id);
     }
 
     @Override
