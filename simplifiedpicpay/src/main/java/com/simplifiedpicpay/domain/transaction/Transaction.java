@@ -11,7 +11,6 @@ import java.util.Objects;
 
 @Entity(name="transactions")
 @Table(name="transactions")
-
 public class Transaction {
 
     @Id

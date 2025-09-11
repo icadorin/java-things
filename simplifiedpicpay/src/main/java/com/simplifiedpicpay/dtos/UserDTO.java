@@ -1,6 +1,5 @@
 package com.simplifiedpicpay.dtos;
 
-import com.simplifiedpicpay.domain.user.User;
 import com.simplifiedpicpay.domain.user.UserType;
 
 import java.math.BigDecimal;

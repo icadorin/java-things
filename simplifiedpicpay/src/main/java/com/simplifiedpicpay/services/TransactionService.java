@@ -1,5 +1,6 @@
 package com.simplifiedpicpay.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.simplifiedpicpay.domain.transaction.Transaction;
 import com.simplifiedpicpay.domain.user.User;
 import com.simplifiedpicpay.dtos.TransactionDTO;
@@ -60,12 +61,13 @@ public class TransactionService {
     }
 
     public boolean authorizedTransaction(User user, BigDecimal value) {
-        ResponseEntity<Map> authorizationResponse = restTemplate.
-                getForEntity("https://util.devi.tools/api/v2/authorize", Map.class);
+        try {
+            JsonNode response = restTemplate
+                    .getForObject("https://util.devi.tools/api/v2/authorize", JsonNode.class);
 
-        if(authorizationResponse.getStatusCode() == HttpStatus.OK){
-            String message = (String) authorizationResponse.getBody().get("authorization");
-            return "Autorizado".equalsIgnoreCase(message);
-        } else return false;
+            return response != null && response.path("data").path("authorization").asBoolean();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

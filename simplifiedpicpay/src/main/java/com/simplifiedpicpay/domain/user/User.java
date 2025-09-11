@@ -9,7 +9,6 @@ import java.util.Objects;
 
 @Entity(name="users")
 @Table(name="users")
-
 public class User {
 
     @Id
