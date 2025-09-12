@@ -1,9 +1,9 @@
 package com.simplifiedpicpay.services;
 
 import com.simplifiedpicpay.domain.user.User;
-import com.simplifiedpicpay.domain.user.UserType;
 import com.simplifiedpicpay.dtos.UserDTO;
 import com.simplifiedpicpay.repositories.UserRepository;
+import com.simplifiedpicpay.validations.TransactionValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +16,11 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public void validateTransaction(User sender, BigDecimal amount) throws Exception {
-        if (sender.getUserType() == UserType.MERCHANT){
-            throw new Exception("Usuário do tipo lojista não está autorizado a realizar transação");
-        }
+    @Autowired
+    private TransactionValidator transactionValidator;
 
-        if(sender.getBalance().compareTo(amount) < 0){
-            throw new Exception("Saldo insuficiente");
-        }
+    public void validateTransaction(User sender, BigDecimal amount) throws Exception {
+        transactionValidator.validate(sender, amount);
     }
 
     public User findUserById(Long id) throws Exception {
@@ -40,7 +37,7 @@ public class UserService {
         return this.repository.findAll();
     }
 
-    public void saveUser(User user){
+    public void saveUser(User user) {
         this.repository.save(user);
     }
 }

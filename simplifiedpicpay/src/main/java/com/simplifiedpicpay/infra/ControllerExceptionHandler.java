@@ -1,6 +1,7 @@
 package com.simplifiedpicpay.infra;
 
 import com.simplifiedpicpay.dtos.ExceptionDTO;
+import com.simplifiedpicpay.exceptions.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,12 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Void> threat404(EntityNotFoundException exception) {
         return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ExceptionDTO> threatBusinessException(BusinessException exception) {
+        ExceptionDTO exceptionDTO = new ExceptionDTO(exception.getMessage(), "400");
+        return ResponseEntity.badRequest().body(exceptionDTO);
     }
 
     @ExceptionHandler(Exception.class)
